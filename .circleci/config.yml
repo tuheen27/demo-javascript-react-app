@@ -1,21 +1,21 @@
 version: 2.1
 orbs:
-  node: circleci/node@4.7.0
-  heroku: circleci/heroku@1.2.6
+  node: circleci/node@5.2.0
+  heroku: circleci/heroku@2.0.0
 
 jobs:
   build_and_test:
     docker:
-      - image: cimg/node:17.2.0
+      - image: cimg/node:20.18
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: npm
       - run:
-          command: yarn test
+          command: npm test
           name: Run tests
       - run:
-          command: yarn build
+          command: npm run build
           name: Build app
       - persist_to_workspace:
           root: ~/project
@@ -23,7 +23,7 @@ jobs:
             - .
   deploy: # this can be any name you choose
     docker:
-      - image: cimg/node:17.2.0
+      - image: cimg/node:20.18
     steps:
       - attach_workspace:
           at: ~/project
